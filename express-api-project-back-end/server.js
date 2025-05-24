@@ -7,7 +7,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const cors = require('cors');
-// const petRouter = require('./controllers/pets.js');
+
+// Import Controllers
+const authRouter = require('./controllers/auth.js');
+const kidRouter = require('./controllers/kids.js');
+const goalRouter = require('./controllers/goals.js');
+const activityRouter = require('./controllers/activities.js');
 
 // Initialize App
 const app = express();
@@ -20,13 +25,15 @@ mongoose.connection.on('connected', () => {
 });
 
 // Middleware
-// app.use(cors());
 app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(express.json());
 app.use(logger('dev'));
 
 // Routes
-// app.use('/pets', petRouter);
+app.use('/auth', authRouter);
+app.use('/kids', kidRouter);
+app.use('/goals', goalRouter);
+app.use('/activities', activityRouter);
 
 // Start Server
 app.listen(PORT, () => {
