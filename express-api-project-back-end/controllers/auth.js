@@ -4,7 +4,6 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
 const User = require('../models/user');
 
 const saltRounds = 12;
@@ -14,7 +13,7 @@ router.post('/sign-up', async (req, res) => {
     const userInDatabase = await User.findOne({ username: req.body.username });
 
     if (userInDatabase) {
-      return res.status(409).json({err:'Username already taken.'});
+      return res.status(409).json({error:'Username already taken.'});
     }
 
     const user = await User.create({
@@ -29,7 +28,7 @@ router.post('/sign-up', async (req, res) => {
     res.status(201).json({ token });
   } catch (err) {
     // Send the error message to the client
-    res.status(500).json({ err: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -37,7 +36,7 @@ router.post('/sign-in', async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
-      return res.status(401).json({ err: 'Invalid credentials.' });
+      return res.status(401).json({ error: 'Invalid credentials.' });
     }
 
     // Check if the password is correct using bcrypt
@@ -46,7 +45,7 @@ router.post('/sign-in', async (req, res) => {
     );
     // If the password is incorrect, return a 401 status code with a message
     if (!isPasswordCorrect) {
-      return res.status(401).json({ err: 'Invalid credentials.' });
+      return res.status(401).json({ error: 'Invalid credentials.' });
     }
 
     // Construct the payload
@@ -57,7 +56,7 @@ router.post('/sign-in', async (req, res) => {
 
     res.status(200).json({ token });
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
