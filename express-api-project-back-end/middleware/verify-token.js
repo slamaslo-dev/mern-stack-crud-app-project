@@ -1,18 +1,22 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 function verifyToken(req, res, next) {
   try {
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Assign decoded payload to req.user
     req.user = decoded.payload;
 
+    console.log("Decoded:", decoded);
+    console.log("User ID:", decoded.payload._id);
+    req.userId = decoded.payload._id;
+
     // Call next() to invoke the next middleware function
     next();
   } catch (err) {
     // If any errors, send back a 401 status and an 'Invalid token.' error message
-    res.status(401).json({ err: 'Invalid token.' });
+    res.status(401).json({ err: "Invalid token." });
   }
 }
 

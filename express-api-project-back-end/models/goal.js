@@ -13,12 +13,6 @@ const goalSchema = new mongoose.Schema({
     ref: "Kid",
     required: true,
   },
-  activities: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Activity",
-    },
-  ],
 });
 
 module.exports = mongoose.model("Goal", goalSchema);
