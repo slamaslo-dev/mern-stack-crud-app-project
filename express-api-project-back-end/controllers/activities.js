@@ -22,7 +22,7 @@ router.post("/", verifyToken, async (req, res) => {
       kid: req.body.kid,
     });
 
-    res.status(201).json({ data: newActivity });
+    res.status(201).json(newActivity);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -39,7 +39,35 @@ router.get("/goal/:goalId", verifyToken, async (req, res) => {
     }
 
     const activities = await Activity.find({ goal: req.params.goalId });
-    res.status(200).json({ data: activities });
+    res.status(200).json(activities);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update activity
+router.put("/:activityId", verifyToken, async (req, res) => {
+  try {
+    const activity = await Activity.findById(req.params.activityId).populate(
+      "kid"
+    );
+
+    if (!activity) return res.status(404).json({ error: "Activity not found" });
+
+    if (activity.kid.guardian.toString() !== req.user._id) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    const updatedActivity = await Activity.findByIdAndUpdate(
+      req.params.activityId,
+      {
+        title: req.body.title,
+        description: req.body.description,
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedActivity);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -65,7 +93,27 @@ router.patch("/:activityId/complete", verifyToken, async (req, res) => {
     activity.isCompleted = true;
     const updated = await activity.save();
 
-    res.status(200).json({ data: updated });
+    res.status(200).json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE activity
+router.delete("/:activityId", verifyToken, async (req, res) => {
+  try {
+    const activity = await Activity.findById(req.params.activityId).populate(
+      "kid"
+    );
+
+    if (!activity) return res.status(404).json({ error: "Activity not found" });
+
+    if (activity.kid.guardian.toString() !== req.user._id) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    await activity.deleteOne();
+    res.status(200).json(activity);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

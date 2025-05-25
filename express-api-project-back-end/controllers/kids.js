@@ -15,7 +15,7 @@ router.post("/", verifyToken, async (req, res) => {
       guardian: req.user._id,
     });
 
-    res.status(201).json({ data: newKid });
+    res.status(201).json(newKid);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -25,7 +25,7 @@ router.post("/", verifyToken, async (req, res) => {
 router.get("/", verifyToken, async (req, res) => {
   try {
     const kids = await Kid.find({ guardian: req.user._id });
-    res.status(200).json({ data: kids });
+    res.status(200).json(kids);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -41,7 +41,7 @@ router.get("/:kidId", verifyToken, async (req, res) => {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
-    res.status(200).json({ data: kid });
+    res.status(200).json(kid);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -62,7 +62,7 @@ router.delete("/:kidId", verifyToken, async (req, res) => {
     await Goal.deleteMany({ kid: req.params.kidId });
     await kid.deleteOne();
 
-    res.status(200).json({ data: kid });
+    res.status(200).json(kid);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

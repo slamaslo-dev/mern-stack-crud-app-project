@@ -22,7 +22,7 @@ router.post("/", verifyToken, async (req, res) => {
       kid: req.body.kid,
     });
 
-    res.status(201).json({ data: newGoal });
+    res.status(201).json(newGoal);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -39,7 +39,7 @@ router.get("/kid/:kidId", verifyToken, async (req, res) => {
     }
 
     const goals = await Goal.find({ kid: req.params.kidId });
-    res.status(200).json({ data: goals });
+    res.status(200).json(goals);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -55,7 +55,7 @@ router.get("/:goalId", verifyToken, async (req, res) => {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
-    res.status(200).json({ data: goal });
+    res.status(200).json(goal);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -75,7 +75,7 @@ router.delete("/:goalId", verifyToken, async (req, res) => {
     await Activity.deleteMany({ goal: req.params.goalId });
     await goal.deleteOne();
     
-    res.status(200).json({ data: goal });
+    res.status(200).json(goal);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

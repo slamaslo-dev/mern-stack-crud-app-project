@@ -30,7 +30,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
       return res.status(404).json({ error: 'User not found.'});
     }
 
-    res.json({ user });
+    res.json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
