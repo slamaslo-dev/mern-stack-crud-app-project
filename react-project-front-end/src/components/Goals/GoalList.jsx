@@ -6,8 +6,12 @@ import { index as fetchGoals } from '../../services/goalService'
 const GoalList = ({ kidId }) => {
     const [goals, setGoals] = useState([])
     const [showForm, setShowForm] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const load = async () => {
+        if (!kidId) return
+        
+        setLoading(true)
         try {
             const response = await fetchGoals(kidId);
             if (response.err) {
@@ -17,27 +21,51 @@ const GoalList = ({ kidId }) => {
             setGoals(response.data || response);
         } catch (err) {
             console.error('Error loading goals:', err);
+        } finally {
+            setLoading(false)
         }
     }
 
     useEffect(() => {
-        if (kidId) {
-            load();
-        }
+        load();
     }, [kidId])
+
+    const handleFormComplete = () => {
+        setShowForm(false)
+        load()
+    }
+
+    if (loading) return <div>Loading goals...</div>
 
     return (
         <div>
             <h3>Goals</h3>
             <button onClick={() => setShowForm(!showForm)}>
-                {showForm ? 'Cancel' : 'Add'}
+                {showForm ? 'Cancel' : 'Add Goal'}
             </button>
-            {showForm && <GoalForm kidId={kidId} onComplete={() => { setShowForm(false); load() }} />}
-            <ul>
-                {goals.map(g => (
-                    <GoalItem key={g._id} goal={g} onDeleted={load} onUpdated={load} />
-                ))}
-            </ul>
+            
+            {showForm && (
+                <GoalForm 
+                    kidId={kidId} 
+                    onComplete={handleFormComplete} 
+                />
+            )}
+            
+            {goals.length === 0 ? (
+                <p>No goals yet. Add one above!</p>
+            ) : (
+                <ul style={{ listStyle: 'none', padding: 0 }}>
+                    {goals.map(g => (
+                        <GoalItem 
+                            key={g._id} 
+                            goal={g} 
+                            kidId={kidId}
+                            onDeleted={load} 
+                            onUpdated={load} 
+                        />
+                    ))}
+                </ul>
+            )}
         </div>
     )
 }

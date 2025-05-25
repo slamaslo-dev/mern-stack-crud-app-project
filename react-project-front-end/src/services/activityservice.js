@@ -69,6 +69,23 @@ const markComplete = async (activityId) => {
     }
 }
 
+const markIncomplete = async (activityId) => {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${BASE_URL}/${activityId}/incomplete`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        });
+        return res.json();
+    } catch (err) {
+        console.log(err);
+        return { err: err.message };
+    }
+}
+
 const deleteActivity = async (activityId) => {
     try {
         const token = localStorage.getItem('token');
@@ -91,5 +108,6 @@ export {
     create,
     update,
     markComplete,
+    markIncomplete,
     deleteActivity
 }

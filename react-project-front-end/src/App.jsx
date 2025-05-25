@@ -17,13 +17,13 @@ function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
-    if (!user) return; // Don’t fetch if no user is logged in
+    if (!user) return;
 
     const fetchKids = async () => {
       try {
         const fetched = await kidService.index();
         if (fetched.err) throw new Error(fetched.err);
-        setKids(fetched.data || fetched || []);
+        setKids(fetched);
       } catch (err) {
         console.log(err);
       }
@@ -44,7 +44,9 @@ function App() {
   const handleAddKid = async (formData) => {
     try {
       const newKid = await kidService.create(formData);
+
       if (newKid.err) throw new Error(newKid.err);
+
       setKids([newKid, ...kids]);
       setIsFormOpen(false);
     } catch (err) {

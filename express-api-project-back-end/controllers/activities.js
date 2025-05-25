@@ -74,7 +74,6 @@ router.put("/:activityId", verifyToken, async (req, res) => {
 });
 
 // PATCH. Mark activity as complete
-// Not using UPDATE/PUT because we are not editing the whole record
 router.patch("/:activityId/complete", verifyToken, async (req, res) => {
   try {
     const activity = await Activity.findById(req.params.activityId).populate(
@@ -91,6 +90,31 @@ router.patch("/:activityId/complete", verifyToken, async (req, res) => {
 
     // Update the same object we already fetched
     activity.isCompleted = true;
+    const updated = await activity.save();
+
+    res.status(200).json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PATCH. Mark activity as incomplete
+router.patch("/:activityId/incomplete", verifyToken, async (req, res) => {
+  try {
+    const activity = await Activity.findById(req.params.activityId).populate(
+      "kid"
+    );
+
+    // Check existence first
+    if (!activity) return res.status(404).json({ error: "Not found" });
+
+    // Check authorization
+    if (activity.kid.guardian.toString() !== req.user._id) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    // Update the same object we already fetched
+    activity.isCompleted = false;
     const updated = await activity.save();
 
     res.status(200).json(updated);

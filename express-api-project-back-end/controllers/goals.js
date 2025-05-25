@@ -61,6 +61,31 @@ router.get("/:goalId", verifyToken, async (req, res) => {
   }
 });
 
+// UPDATE goal
+router.put("/:goalId", verifyToken, async (req, res) => {
+  try {
+    const goal = await Goal.findById(req.params.goalId).populate("kid");
+    if (!goal) return res.status(404).json({ error: "Goal not found" });
+
+    if (goal.kid.guardian.toString() !== req.user._id) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    const updatedGoal = await Goal.findByIdAndUpdate(
+      req.params.goalId,
+      {
+        title: req.body.title,
+        description: req.body.description,
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedGoal);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // DELETE goal
 router.delete("/:goalId", verifyToken, async (req, res) => {
   try {
