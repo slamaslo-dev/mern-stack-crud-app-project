@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Activity = require("../models/activity");
 const Goal = require("../models/goal");
 const Kid = require("../models/kid");
 const verifyToken = require("../middleware/verify-token");
@@ -11,7 +12,7 @@ router.post("/", verifyToken, async (req, res) => {
     const kid = await Kid.findById(req.body.kid);
     if (!kid) return res.status(404).json({ error: "Kid not found" });
 
-    if (kid.guardian.toString() !== req.userId) {
+    if (kid.guardian.toString() !== req.user._id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
@@ -33,7 +34,7 @@ router.get("/kid/:kidId", verifyToken, async (req, res) => {
     const kid = await Kid.findById(req.params.kidId);
     if (!kid) return res.status(404).json({ error: "Kid not found" });
 
-    if (kid.guardian.toString() !== req.userId) {
+    if (kid.guardian.toString() !== req.user._id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
@@ -50,7 +51,7 @@ router.get("/:goalId", verifyToken, async (req, res) => {
     const goal = await Goal.findById(req.params.goalId).populate("kid");
     if (!goal) return res.status(404).json({ error: "Goal not found" });
 
-    if (goal.kid.guardian.toString() !== req.userId) {
+    if (goal.kid.guardian.toString() !== req.user._id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
@@ -66,7 +67,7 @@ router.delete("/:goalId", verifyToken, async (req, res) => {
     const goal = await Goal.findById(req.params.goalId).populate("kid");
     if (!goal) return res.status(404).json({ error: "Goal not found" });
 
-    if (goal.kid.guardian.toString() !== req.userId) {
+    if (goal.kid.guardian.toString() !== req.user._id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 

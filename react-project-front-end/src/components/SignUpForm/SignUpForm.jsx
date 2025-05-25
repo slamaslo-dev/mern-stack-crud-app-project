@@ -23,7 +23,7 @@ const SignUpForm = () => {
     try {
       const newUser = await signUp(formData)
       setUser(newUser)
-      navigate('/kids')
+      navigate('/')
     } catch (err) {
       setMessage(err.message)
     }

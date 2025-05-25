@@ -11,7 +11,7 @@ router.post("/", verifyToken, async (req, res) => {
     const kid = await Kid.findById(req.body.kid);
     if (!kid) return res.status(404).json({ error: "Kid not found" });
 
-    if (kid.guardian.toString() !== req.userId) {
+    if (kid.guardian.toString() !== req.user._id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
@@ -34,7 +34,7 @@ router.get("/goal/:goalId", verifyToken, async (req, res) => {
     const goal = await Goal.findById(req.params.goalId).populate("kid");
     if (!goal) return res.status(404).json({ error: "Goal not found" });
 
-    if (goal.kid.guardian.toString() !== req.userId) {
+    if (goal.kid.guardian.toString() !== req.user._id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 
@@ -57,7 +57,7 @@ router.patch("/:activityId/complete", verifyToken, async (req, res) => {
     if (!activity) return res.status(404).json({ error: "Not found" });
 
     // Check authorization
-    if (activity.kid.guardian.toString() !== req.userId) {
+    if (activity.kid.guardian.toString() !== req.user._id) {
       return res.status(403).json({ error: "Unauthorized" });
     }
 

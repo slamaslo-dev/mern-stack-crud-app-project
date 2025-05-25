@@ -31,7 +31,7 @@ const KidDetail = ({
 
             <div style={{ display: 'flex', gap: '2rem' }}>
                 <GoalList kidId={selected._id} />
-                <ActivityList kidId={selected._id} />
+                {/* <ActivityList kidId={selected._id} /> */}
             </div>
         </section>
     )

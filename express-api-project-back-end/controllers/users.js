@@ -12,7 +12,7 @@ router.get('/', verifyToken, async (req, res) => {
 
     res.json(users);
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -22,17 +22,17 @@ router.get('/:userId', verifyToken, async (req, res) => {
     // If the user is looking for the details of another user, block the request
     // Send a 403 status code to indicate that the user is unauthorized
     if (req.user._id !== req.params.userId){
-      return res.status(403).json({ err: "Unauthorized"});
+      return res.status(403).json({ error: "Unauthorized"});
     }
 
     const user = await User.findById(req.params.userId);
     if (!user) {
-      return res.status(404).json({ err: 'User not found.'});
+      return res.status(404).json({ error: 'User not found.'});
     }
 
     res.json({ user });
   } catch (err) {
-    res.status(500).json({ err: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
