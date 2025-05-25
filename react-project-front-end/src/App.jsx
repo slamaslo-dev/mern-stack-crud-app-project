@@ -1,17 +1,23 @@
 import './App.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { Routes, Route } from 'react-router'
 import * as kidService from './services/kidService'
 import NavBar from './components/NavBar/NavBar'
+import SignUpForm from './components/SignUpForm/SignUpForm'
+import SignInForm from './components/SignInForm/SignInForm'
 import KidList from './components/KidList/KidList'
 import KidForm from './components/KidList/KidForm'
 import KidDetail from './components/KidDetail/KidDetail'
+import { UserContext } from './contexts/UserContext'
 
 function App() {
+  const { user } = useContext(UserContext)
   const [kids, setKids] = useState([])
   const [selected, setSelected] = useState(null)
   const [isFormOpen, setIsFormOpen] = useState(false)
 
   useEffect(() => {
+    if (!user) return
     const fetchKids = async () => {
       try {
         const fetched = await kidService.index()
@@ -22,7 +28,7 @@ function App() {
       }
     }
     fetchKids()
-  }, [])
+  }, [user])
 
   const handleSelect = (kid) => {
     setSelected(kid)
@@ -30,7 +36,6 @@ function App() {
   }
 
   const handleFormView = (kid) => {
-    // if no kid passed in, clear selection
     if (!kid?._id) setSelected(null)
     setIsFormOpen(!isFormOpen)
   }
@@ -48,10 +53,10 @@ function App() {
 
   const handleUpdateKid = async (formData, kidId) => {
     try {
-      const updated = await kidService.update(formData, kidId)
-      if (updated.err) throw new Error(updated.err)
-      setKids(kids.map(k => (k._id !== updated._id ? k : updated)))
-      setSelected(updated)
+      const updatedKid = await kidService.update(formData, kidId)
+      if (updatedKid.err) throw new Error(updatedKid.err)
+      setKids(kids.map(k => (k._id !== updatedKid._id ? k : updatedKid)))
+      setSelected(updatedKid)
       setIsFormOpen(false)
     } catch (err) {
       console.log(err)
@@ -60,9 +65,9 @@ function App() {
 
   const handleDeleteKid = async (kidId) => {
     try {
-      const deleted = await kidService.deleteKid(kidId)
-      if (deleted.err) throw new Error(deleted.err)
-      setKids(kids.filter(k => k._id !== deleted._id))
+      const deletedKid = await kidService.deleteKid(kidId)
+      if (deletedKid.err) throw new Error(deletedKid.err)
+      setKids(kids.filter(k => k._id !== deletedKid._id))
       setSelected(null)
       setIsFormOpen(false)
     } catch (err) {
@@ -73,25 +78,40 @@ function App() {
   return (
     <>
       <NavBar />
-      <KidList
-        kids={kids}
-        handleSelect={handleSelect}
-        handleFormView={handleFormView}
-        isFormOpen={isFormOpen}
-      />
-      {isFormOpen ? (
-        <KidForm
-          handleAddKid={handleAddKid}
-          selected={selected}
-          handleUpdateKid={handleUpdateKid}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            user ? (
+              <>
+                <KidList
+                  kids={kids}
+                  handleSelect={handleSelect}
+                  handleFormView={handleFormView}
+                  isFormOpen={isFormOpen}
+                />
+                {isFormOpen ? (
+                  <KidForm
+                    handleAddKid={handleAddKid}
+                    selected={selected}
+                    handleUpdateKid={handleUpdateKid}
+                  />
+                ) : (
+                  <KidDetail
+                    selected={selected}
+                    handleFormView={handleFormView}
+                    handleDeleteKid={handleDeleteKid}
+                  />
+                )}
+              </>
+            ) : (
+              <div>Please sign up or log in to view your kids.</div>
+            )
+          }
         />
-      ) : (
-        <KidDetail
-          selected={selected}
-          handleFormView={handleFormView}
-          handleDeleteKid={handleDeleteKid}
-        />
-      )}
+        <Route path="/sign-up" element={<SignUpForm />} />
+        <Route path="/sign-in" element={<SignInForm />} />
+      </Routes>
     </>
   )
 }
