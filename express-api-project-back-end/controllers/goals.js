@@ -8,7 +8,6 @@ const verifyToken = require("../middleware/verify-token");
 // CREATE
 router.post("/", verifyToken, async (req, res) => {
   try {
-
     const kid = await Kid.findById(req.body.kid);
     if (!kid) return res.status(404).json({ error: "Kid not found" });
 
@@ -99,7 +98,7 @@ router.delete("/:goalId", verifyToken, async (req, res) => {
     // Cascade delete: remove all activities for this goal
     await Activity.deleteMany({ goal: req.params.goalId });
     await goal.deleteOne();
-    
+
     res.status(200).json(goal);
   } catch (err) {
     res.status(500).json({ error: err.message });

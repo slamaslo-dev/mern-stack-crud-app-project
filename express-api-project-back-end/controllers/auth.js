@@ -1,29 +1,29 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const User = require('../models/user');
+const User = require("../models/user");
 
 const saltRounds = 12;
 
-router.post('/sign-up', async (req, res) => {
+router.post("/sign-up", async (req, res) => {
   try {
     const userInDatabase = await User.findOne({ username: req.body.username });
 
     if (userInDatabase) {
-      return res.status(409).json({error:'Username already taken.'});
+      return res.status(409).json({ error: "Username already taken." });
     }
 
     const user = await User.create({
       username: req.body.username,
-      hashedPassword: bcrypt.hashSync(req.body.password, saltRounds)
+      hashedPassword: bcrypt.hashSync(req.body.password, saltRounds),
     });
 
     const payload = { username: user.username, _id: user._id };
 
-    const token = jwt.sign({ payload}, process.env.JWT_SECRET);
+    const token = jwt.sign({ payload }, process.env.JWT_SECRET);
 
     res.status(201).json({ token });
   } catch (err) {
@@ -32,20 +32,21 @@ router.post('/sign-up', async (req, res) => {
   }
 });
 
-router.post('/sign-in', async (req, res) => {
+router.post("/sign-in", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials.' });
+      return res.status(401).json({ error: "Invalid credentials." });
     }
 
     // Check if the password is correct using bcrypt
     const isPasswordCorrect = bcrypt.compareSync(
-      req.body.password, user.hashedPassword
+      req.body.password,
+      user.hashedPassword
     );
     // If the password is incorrect, return a 401 status code with a message
     if (!isPasswordCorrect) {
-      return res.status(401).json({ error: 'Invalid credentials.' });
+      return res.status(401).json({ error: "Invalid credentials." });
     }
 
     // Construct the payload
@@ -59,6 +60,5 @@ router.post('/sign-in', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 module.exports = router;

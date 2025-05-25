@@ -1,15 +1,13 @@
 const KidList = ({ kids, handleSelect, handleFormView, isFormOpen }) => (
   <section>
     <h2>Kids</h2>
-    <button onClick={() => handleFormView(null)}>
-      + New Kid
-    </button>
+    <button onClick={() => handleFormView(null)}>+ New Kid</button>
     <ul>
-      {kids.map(k => (
+      {kids.map((k) => (
         <li key={k._id}>
           <span
             onClick={() => handleSelect(k)}
-            style={{ cursor: 'pointer', textDecoration: 'underline' }}
+            style={{ cursor: "pointer", textDecoration: "underline" }}
           >
             {k.name}
           </span>
@@ -17,6 +15,6 @@ const KidList = ({ kids, handleSelect, handleFormView, isFormOpen }) => (
       ))}
     </ul>
   </section>
-)
+);
 
-export default KidList
+export default KidList;

@@ -8,7 +8,6 @@ const verifyToken = require("../middleware/verify-token");
 // CREATE kid (assigns to current user)
 router.post("/", verifyToken, async (req, res) => {
   try {
-
     const newKid = await Kid.create({
       name: req.body.name,
       birthDate: req.body.birthDate,
