@@ -46,6 +46,31 @@ router.get("/:kidId", verifyToken, async (req, res) => {
   }
 });
 
+// UPDATE
+router.put("/:kidId", verifyToken, async (req, res) => {
+  try {
+    const kid = await Kid.findById(req.params.kidId);
+    if (!kid) return res.status(404).json({ error: "Kid not found" });
+
+    if (kid.guardian.toString() !== req.user._id) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+
+    const updatedKid = await Kid.findByIdAndUpdate(
+      req.params.kidId,
+      {
+        name: req.body.name,
+        birthDate: req.body.birthDate,
+      },
+      { new: true, runValidators: true }
+    );
+
+    res.status(200).json(updatedKid);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // DELETE kid
 router.delete("/:kidId", verifyToken, async (req, res) => {
   try {
