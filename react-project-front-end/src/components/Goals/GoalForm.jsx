@@ -18,7 +18,7 @@ const GoalForm = ({ kidId, onComplete }) => {
         onChange={handleChange}
         placeholder="Goal title"
       />
-      <button type="submit">Save</button>
+      <button className="btn" type="submit">Save</button>
     </form>
   );
 };

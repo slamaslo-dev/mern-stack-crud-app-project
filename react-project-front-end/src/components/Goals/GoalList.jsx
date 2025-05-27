@@ -38,9 +38,9 @@ const GoalList = ({ kidId }) => {
   if (loading) return <div>Loading goals...</div>;
 
   return (
-    <div>
+     <div className="section">
       <h3>Goals</h3>
-      <button onClick={() => setShowForm(!showForm)}>
+      <button className="btn" onClick={() => setShowForm(!showForm)}>
         {showForm ? "Cancel" : "Add Goal"}
       </button>
 

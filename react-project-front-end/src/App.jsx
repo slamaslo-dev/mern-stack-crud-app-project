@@ -81,43 +81,48 @@ function App() {
   return (
     <>
       <NavBar />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            user ? (
-              <div style={{ display: "flex", gap: "2rem" }}>
-                <KidList
-                  kids={kids}
-                  handleSelect={handleSelect}
-                  handleFormView={handleFormView}
-                  isFormOpen={isFormOpen}
-                />
-                {isFormOpen ? (
-                  <KidForm
-                    handleAddKid={handleAddKid}
-                    selected={selected}
-                    handleUpdateKid={handleUpdateKid}
-                    handleFormView={handleFormView}
-                  />
-                ) : (
-                  <KidDetail
-                    selected={selected}
-                    handleFormView={handleFormView}
-                    handleDeleteKid={handleDeleteKid}
-                  />
-                )}
-              </div>
-            ) : (
-              <div>Please sign in to manage kids.</div>
-            )
-          }
-        />
-        <Route path="/sign-up" element={<SignUpForm />} />
-        <Route path="/sign-in" element={<SignInForm />} />
-      </Routes>
+      <div className="main">
+
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              user
+                ? (
+
+                  <div className="dashboard">
+                    <KidList
+                      kids={kids}
+                      handleSelect={handleSelect}
+                      handleFormView={handleFormView}
+                      isFormOpen={isFormOpen}
+                    />
+                    {isFormOpen
+                      ? <KidForm
+                        className="kid-form"
+                        handleAddKid={handleAddKid}
+                        selected={selected}
+                        handleUpdateKid={handleUpdateKid}
+                        handleFormView={handleFormView}
+                      />
+                      : <KidDetail
+                        selected={selected}
+                        handleFormView={handleFormView}
+                        handleDeleteKid={handleDeleteKid}
+                      />}
+                  </div>
+                )
+                : <div>Please sign in to manage kids.</div>
+            }
+          />
+          <Route path="/sign-up" element={<SignUpForm />} />
+          <Route path="/sign-in" element={<SignInForm />} />
+        </Routes>
+      </div>
     </>
-  );
+  )
+
 }
 
 export default App;

@@ -29,7 +29,7 @@ const SignInForm = () => {
   };
 
   return (
-    <main>
+    <main className="auth-container">
       <h1>Sign In</h1>
       <p style={{ color: "red" }}>{message}</p>
       <form autoComplete="off" onSubmit={handleSubmit}>
@@ -58,8 +58,8 @@ const SignInForm = () => {
           />
         </div>
         <div>
-          <button type="submit">Sign In</button>
-          <button type="button" onClick={() => navigate("/kids")}>
+          <button className="btn" type="submit">Sign In</button>
+          <button className="btn" type="button" onClick={() => navigate("/kids")}>
             Cancel
           </button>
         </div>

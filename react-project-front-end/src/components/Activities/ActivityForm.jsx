@@ -39,7 +39,7 @@ const ActivityForm = ({ kidId, goalId, onComplete }) => {
         onChange={handleChange}
         placeholder="Activity description"
       />
-      <button type="submit">Save</button>
+      <button className="btn" type="submit">Save</button>
     </form>
   );
 };

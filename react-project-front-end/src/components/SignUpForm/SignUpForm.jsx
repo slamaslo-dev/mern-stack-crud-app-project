@@ -37,7 +37,7 @@ const SignUpForm = () => {
     );
 
   return (
-    <main>
+    <main className="auth-container"> 
       <h1>Sign Up</h1>
       <p style={{ color: "red" }}>{message}</p>
       <form onSubmit={handleSubmit}>
@@ -75,10 +75,10 @@ const SignUpForm = () => {
           />
         </div>
         <div>
-          <button type="submit" disabled={isFormInvalid()}>
+          <button className="btn" type="submit" disabled={isFormInvalid()}>
             Sign Up
           </button>
-          <button type="button" onClick={() => navigate("/kids")}>
+          <button className="btn" type="button" onClick={() => navigate("/kids")}>
             Cancel
           </button>
         </div>

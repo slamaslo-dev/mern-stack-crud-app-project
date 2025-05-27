@@ -26,12 +26,19 @@ const KidForm = ({
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selected?._id) {
-      handleUpdateKid(formData, selected._id);
-    } else {
-      handleAddKid(formData);
+    try {
+      if (selected?._id) {
+        
+        await handleUpdateKid(formData, selected._id);
+      } else {
+        await handleAddKid(formData);
+      }
+      
+      handleFormView(null);
+    } catch (err) {
+      console.error("Failed to save:", err);
     }
   };
 
@@ -51,10 +58,10 @@ const KidForm = ({
           onChange={handleChange}
         />
       </label>
-      <button type="submit">
+      <button className="btn" type="submit">
         {selected?._id ? "Save Changes" : "Add Kid"}
       </button>
-      <button type="button" onClick={() => handleFormView(null)}>
+      <button className="btn" type="button" onClick={() => handleFormView(null)}>
         Cancel
       </button>
     </form>

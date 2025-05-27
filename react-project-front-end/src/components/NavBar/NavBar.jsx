@@ -13,8 +13,8 @@ const NavBar = () => {
   return (
     <header style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>
       <nav style={{ display: "flex", justifyContent: "space-between" }}>
-        <div>Kids App</div>
-        <div>
+        <div className="app-title">Growth Tracker</div>
+        <div className="nav-links">
           {user ? (
             <>
               <span style={{ marginRight: "1rem" }}>Hi {user.username}!</span>

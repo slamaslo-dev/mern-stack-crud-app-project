@@ -38,7 +38,7 @@ const ActivityList = ({ goalId, kidId }) => {
   if (loading) return <div>Loading activities...</div>;
 
   return (
-    <div>
+     <div className="section">
       <h4>Activities</h4>
       <button onClick={() => setShowForm(!showForm)}>
         {showForm ? "Cancel" : "Add Activity"}
