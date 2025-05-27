@@ -5,6 +5,11 @@ const KidDetail = ({ selected, handleFormView, handleDeleteKid }) => {
     return <p>Please select a kid (or add a new one).</p>;
   }
 
+  const formatDate = (dateString) => {
+    const datePart = new Date(dateString).toISOString().split('T')[0];
+    return datePart;
+  };
+
   return (
     <div className="kid-card">
       <header>
@@ -29,7 +34,7 @@ const KidDetail = ({ selected, handleFormView, handleDeleteKid }) => {
         <h3>Basic Info</h3>
         <p>
           Birth Date:{' '}
-          {new Date(selected.birthDate).toLocaleDateString()}
+          {formatDate(selected.birthDate)}
         </p>
       </div>
 
