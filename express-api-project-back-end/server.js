@@ -31,7 +31,7 @@ const corsOptions = {
     'http://localhost:3000'
   ],
   // No credentials: true needed since we're using localStorage
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
