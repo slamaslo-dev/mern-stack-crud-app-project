@@ -9,10 +9,10 @@ const logger = require("morgan");
 const cors = require("cors");
 
 // Import Controllers
-const authRouter = require("./controllers/auth.js");
-const kidRouter = require("./controllers/kids.js");
-const goalRouter = require("./controllers/goals.js");
-const activityRouter = require("./controllers/activities.js");
+const authRouter = require("./controllers/auth");
+const kidRouter = require("./controllers/kids");
+const goalRouter = require("./controllers/goals");
+const activityRouter = require("./controllers/activities");
 
 // Initialize App
 const app = express();
