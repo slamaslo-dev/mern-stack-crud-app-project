@@ -1,4 +1,4 @@
-import GoalList from "../Goals/GoalList";
+import GoalList from "../Goals/GoalList.jsx";
 
 const KidDetail = ({ selected, handleFormView, handleDeleteKid }) => {
   if (!selected) {

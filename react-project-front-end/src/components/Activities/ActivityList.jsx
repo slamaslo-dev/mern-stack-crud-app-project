@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import ActivityItem from "./ActivityItem";
-import ActivityForm from "./ActivityForm";
-import { index as fetchActivities } from "../../services/activityService";
+import ActivityItem from "./ActivityItem.jsx";
+import ActivityForm from "./ActivityForm.jsx";
+import { index as fetchActivities } from "../../services/activityService.js";
 
 const ActivityList = ({ goalId, kidId }) => {
   const [activities, setActivities] = useState([]);

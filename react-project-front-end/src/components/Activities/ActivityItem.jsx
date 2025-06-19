@@ -4,7 +4,7 @@ import {
   deleteActivity,
   markComplete,
   markIncomplete,
-} from "../../services/activityService";
+} from "../../services/activityService.js";
 
 const ActivityItem = ({ activity, onDeleted }) => {
   const [isEditing, setIsEditing] = useState(false);

@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router";
-import { signIn } from "../../services/authService";
-import { UserContext } from "../../contexts/UserContext";
+import { signIn } from "../../services/authService.js";
+import { UserContext } from "../../contexts/UserContext.jsx";
 
 const SignInForm = () => {
   const navigate = useNavigate();

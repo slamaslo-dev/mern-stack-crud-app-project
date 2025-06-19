@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { update as updateGoal, deleteGoal } from "../../services/goalService";
-import ActivityList from "../Activities/ActivityList";
+import { update as updateGoal, deleteGoal } from "../../services/goalService.js";
+import ActivityList from "../Activities/ActivityList.jsx";
 
 const GoalItem = ({ goal, kidId, onDeleted, onUpdated }) => {
   const [isEditing, setIsEditing] = useState(false);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { create as createActivity } from "../../services/activityService";
+import { create as createActivity } from "../../services/activityService.js";
 
 const ActivityForm = ({ kidId, goalId, onComplete }) => {
   const [formData, setFormData] = useState({

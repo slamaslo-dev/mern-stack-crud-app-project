@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import GoalItem from "./GoalItem";
-import GoalForm from "./GoalForm";
-import { index as fetchGoals } from "../../services/goalService";
+import GoalItem from "./GoalItem.jsx";
+import GoalForm from "./GoalForm.jsx";
+import { index as fetchGoals } from "../../services/goalService.js";
 
 const GoalList = ({ kidId }) => {
   const [goals, setGoals] = useState([]);

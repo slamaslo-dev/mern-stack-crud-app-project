@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { create as createGoal } from "../../services/goalService";
+import { create as createGoal } from "../../services/goalService.js";
 
 const GoalForm = ({ kidId, onComplete }) => {
   const [formData, setFormData] = useState({ title: "" });
