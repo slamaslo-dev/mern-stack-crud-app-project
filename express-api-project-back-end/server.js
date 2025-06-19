@@ -25,12 +25,17 @@ mongoose.connection.on("connected", () => {
 });
 
 // Middleware
-app.use(cors({
-  origin: '*',
+const corsOptions = {
+  origin: [
+    'https://lamaslo-kids-prod.netlify.app',
+    'http://localhost:3000'
+  ],
+  // No credentials: true needed since we're using localStorage
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: false
-}));
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(logger("dev"));
 
