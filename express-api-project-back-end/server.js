@@ -24,21 +24,27 @@ mongoose.connection.on("connected", () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
-// Middleware
+// Middleware (CORS)
 const allowedOrigins = [
   'http://localhost:5173',
   'https://lamaslo-kids-prod.netlify.app'
 ];
-app.use(cors({
+
+const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(null, false);
     }
   },
-  credentials: true
-}));
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+// Middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(logger("dev"));
 
